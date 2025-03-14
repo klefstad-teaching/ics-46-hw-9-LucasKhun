@@ -6,6 +6,9 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+add_compile_options("-fsanitize=address,undefined")
+link_libraries("-fsanitize=address,undefined")
+
 set(DIJKSTRAS_SRC_FILES
   src/dijkstras.h
   src/dijkstras.cpp
@@ -38,6 +41,7 @@ if (GTest_FOUND)
     ${DIJKSTRAS_SRC_FILES}
     ${LADDER_SRC_FILES}
   )
+  include_directories(${GTEST_INCLUDE_DIRS})
   target_include_directories(student_gtests PRIVATE src ${GTEST_INCLUDE_DIRS})
   target_link_libraries(student_gtests PRIVATE ${GTEST_LIBRARIES})
 endif()
