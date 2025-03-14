@@ -14,7 +14,12 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
 
 void load_words(set<string> & word_list, const string& file_name){}
 
-void print_word_ladder(const vector<string>& ladder){}
+void print_word_ladder(const vector<string>& ladder){
+    for(string word : ladder){
+        cout << word << "→";
+    }
+    cout << "[END]" << endl;
+}
 
 void verify_word_ladder(){
     set<string> word_list;
