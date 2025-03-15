@@ -25,6 +25,12 @@ struct Edge {
     }
 };
 
+struct WeightComparator{
+    bool operator()(pair<int, int> a, pair<int, int> b){
+        return a.second < b.second;
+    }
+};
+
 struct Graph : public vector<vector<Edge>> {
     int numVertices=0;
 };
