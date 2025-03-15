@@ -6,36 +6,38 @@ void error(string word1, string word2, string msg){
 }
 
 bool edit_distance_within(const std::string& str1, const std::string& str2, int d){
-/*     set<string> nei1, nei2;
-    int size1 = str1.size(), size2 = str2.size();
-    int edit_distance = 0;
+    int n = str1.size(), m = str2.size();
+    vector<vector<int>> matrix(m+1, vector<int>(n+1, 0));
 
-    for(int i=0; i<d; ++i){
-        for()
+    for(int i=1; i<=m; ++i)
+        matrix[i][0] = i;
+    for(int j=1; j<=n; ++j)
+        matrix[0][j] = j;
+    
+    for(int j=1; j<=n; ++j){
+        for(int i=1; i<=m; ++i){
+            int cost = 1;
+            if(str1[j-1] == str2[i-1])
+                cost = 0;
+            matrix[i][j] = min(matrix[i-1][j]+1, min(matrix[i][j-1]+1, matrix[i-1][j-1] + cost));
+        }
     }
-
-
-
-
-    return edit_distance <= d; 
-*/
-    return false;
+    return matrix[m][n] <= d; 
 }
 
 bool is_adjacent(const string& word1, const string& word2){
     return edit_distance_within(word1, word2, 1);
 }
 
-vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
+/* vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
     if(!word_list.contains(end_word)){error("End Word", end_word, "not in word_list");}
-    vector<string> ladder = {begin_word};
     queue<vector<string>> ladder_queue;
-    ladder_queue.push(ladder);
+    ladder_queue.push(vector<string>(1, begin_word));
     set<string> visited;
     visited.insert(begin_word);
 
     while(!ladder_queue.empty()){
-        ladder = ladder_queue.front();
+        vector<string> ladder = ladder_queue.front();
         ladder_queue.pop();
         string last_word = ladder.back();
         for(string word : word_list){
@@ -51,10 +53,9 @@ vector<string> generate_word_ladder(const string& begin_word, const string& end_
             }
         }
     }
-    ladder.clear()
-    return ladder;
+    return vector<string>(0);
 }
-
+ */
 void load_words(set<string> & word_list, const string& file_name){
     ifstream file(file_name);
     string word;
@@ -74,7 +75,7 @@ void print_word_ladder(const vector<string>& ladder){
 
 void verify_word_ladder(){
     set<string> word_list;
-    load_words(word_list, "words.txt");
+    load_words(word_list, "/home/lkhun/46/ics-46-hw-9-LucasKhun/src/words.txt");
     my_assert(generate_word_ladder("cat", "dog", word_list).size() == 4);
     my_assert(generate_word_ladder("marty", "curls", word_list).size() == 6);
     my_assert(generate_word_ladder("code", "data", word_list).size() == 6);
