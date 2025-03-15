@@ -50,7 +50,7 @@ bool is_adjacent(const string& word1, const string& word2){
 
     if (i < len1 || j < len2) ++diff_count;
 
-    return diff_count == 1;
+    return diff_count <= 1;
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
@@ -97,7 +97,8 @@ void print_word_ladder(const vector<string>& ladder){
             cout << word << " ";
         cout << endl;
     }
-    cout << "No word ladder found." << endl;
+    else
+        cout << "No word ladder found." << endl;
 }
 
 void verify_word_ladder(){
