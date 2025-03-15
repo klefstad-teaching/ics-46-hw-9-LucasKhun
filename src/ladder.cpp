@@ -26,9 +26,31 @@ bool edit_distance_within(const std::string& str1, const std::string& str2, int 
 }
 
 bool is_adjacent(const string& word1, const string& word2){
-    int len_difference = int(word1.length()) - int(word2.length());
-    if (abs(len_difference) > 1) return false;
-    return edit_distance_within(word1, word2, 1);
+    int len1 = word1.size(), len2 = word2.size();
+    if (abs(len1 - len2) > 1) return false; // size difference too large
+
+    int diff_count = 0;
+    int i = 0, j = 0;
+
+    while (i < len1 && j < len2) {
+        if (word1[i] != word2[j]) {
+            ++diff_count;
+            if (diff_count > 1) return false; // more than 2 substitutions
+            if (len1 > len2) ++i; 
+            else if (len1 < len2) ++j;
+            else {
+                ++i;
+                ++j;
+            }
+        } else {
+            ++i;
+            ++j;
+        }
+    }
+
+    if (i < len1 || j < len2) ++diff_count;
+
+    return diff_count == 1;
 }
 
 vector<string> generate_word_ladder(const string& begin_word, const string& end_word, const set<string>& word_list){
@@ -69,10 +91,13 @@ void load_words(set<string> & word_list, const string& file_name){
 }
 
 void print_word_ladder(const vector<string>& ladder){
-    for(string word : ladder){
-        cout << word << "→";
+    if(!ladder.empty()){
+        cout << "Word ladder found: ";
+        for(string word : ladder)
+            cout << word << " ";
+        cout << endl;
     }
-    cout << "[END]" << endl;
+    cout << "No word ladder found." << endl;
 }
 
 void verify_word_ladder(){
